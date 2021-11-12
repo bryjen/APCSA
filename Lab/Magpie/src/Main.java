@@ -1,10 +1,7 @@
+import bot.Magpie2;
 import init.Initializer;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Scanner;
 
 public class Main {
 
@@ -18,13 +15,14 @@ public class Main {
                     +"C:\\Users\\Game\\Documents\\GitHub\\APCSA\\Lab\\Magpie\\out\\production\\Magpie"
                     +"\" & start cmd.exe /k \"java Main\"");
 
+            System.out.println("Launced in cmd terminal");
+
             //todo put like guide/diagnostics/something else yaknow
 
             return;
         }
 
-
-
+        new Magpie2();
     }
 
 
