@@ -1,9 +1,7 @@
 package init;
 
-import javax.management.monitor.CounterMonitorMBean;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 public class ArgumentHandler {
     //region Singleton Methods
@@ -23,13 +21,18 @@ public class ArgumentHandler {
     private final String[] args;
     private final ArrayList<String[]> commands;
 
+    private Initializer initializer;
+
     private ArgumentHandler(String[] args) {
-        Initializer initializer = Initializer.getInitializer();
         this.args = args;
         commands = new ArrayList<>();
+    }
+
+    public void parseCommandLineArguments() {
+        initializer = Initializer.getInitializer();
 
         splitIntoArrayCommands();
-        printAllCommands();
+        //printAllCommands(); //todo add this to like a debug mode or something
         executeCommands();
     }
 
@@ -45,11 +48,7 @@ public class ArgumentHandler {
         int anchorPoint = 0;
 
         for (int i = 0; i < args.length; i++) {
-            if (args[i].startsWith("-") || i == args.length - 1) {
-
-                //gets the last element of the array
-                if (i == args.length - 1)
-                    i++;
+            if (args[i].startsWith("-")) {
 
                 if (i != anchorPoint) {
                     ArrayList<String> command = new ArrayList<>();
@@ -66,18 +65,45 @@ public class ArgumentHandler {
                 anchorPoint = i;
             }
         }
+
+        ArrayList<String> command = new ArrayList<>();
+        for (int i = anchorPoint; i < args.length; i++)
+            command.add(args[i]
+                    .trim()
+                    .toLowerCase()
+            );
+        commands.add(command.toArray(new String[0]));
     }
 
     private void executeCommands() throws IllegalArgumentException {
+        if (args.length == 0)
+            return;
+
         for (String[] command : commands) {
             switch (command[0].substring(1)) {
+
                 case "em", "editormode", "editor":
-                    //something
+                    executeEditorModeCommand(command);
                     break;
+
                 default:
-                    throw new IllegalArgumentException(("INVALID COMMAND " + command[0]));
+                    throw new IllegalArgumentException(("INVALID COMMAND \"" + command[0] + "\""));
             }
         }
+    }
+
+    private void executeEditorModeCommand(String[] command) throws IllegalArgumentException {
+        if (command.length != 2)
+            throw new IllegalArgumentException(("INVALID ARRAY LENGTH: " + command.length
+                    + "\n- The '-editormode' command has only one parameter in the form '-editormode true/false'"));
+
+        if (command[1].equals("true") || command[1].equals("t"))
+            initializer.isRunningInEditor = true;
+        else if (command[1].equals("false") || command[1].equals("f"))
+            initializer.isRunningInEditor = false;
+        else
+            throw new IllegalArgumentException(("INVALID PARAMETER: '" + command[1] + "'"
+                    + "\nBOOLEAN PARAMETER REQUIRED t/true/f/false"));
     }
 
     private void printAllCommands() {

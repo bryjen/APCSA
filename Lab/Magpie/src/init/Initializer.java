@@ -7,6 +7,7 @@ public class Initializer {
 
     public static void Initialize(String[] args) {
         initializer = new Initializer(args);
+        initializer.argumentHandler.parseCommandLineArguments();
     }
 
     public static Initializer getInitializer() {
@@ -15,17 +16,16 @@ public class Initializer {
 
     //endregion
 
-    private final String[] args;
     private final ArgumentHandler argumentHandler;
 
     boolean isRunningInEditor;
 
     private Initializer(String[] args) {
-        this.args = args;
-
         ArgumentHandler.Initialize(args);
         argumentHandler = ArgumentHandler.getArgumentHandler();
     }
+
+    public boolean isRunningInEditor() { return isRunningInEditor; }
 
 
 }
