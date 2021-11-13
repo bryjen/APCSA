@@ -12,20 +12,25 @@ public class Magpie2 {
     public Magpie2() {
         scanner = new Scanner(System.in);
         phraseRecognizer = PhraseRecognizer.getPhraseRecognizer();
+    }
 
+    public void start() {
         System.out.print("Hello there!"
-            + "\n> ");
-        statement = scanner.nextLine()
-                .toLowerCase()
-                .trim();
+                + "\n> ");
 
-        while (!statement.equals("bye")) {
+        do {
+            statement = scanner.nextLine()
+                    .toLowerCase()
+                    .trim();
+
+            if (statement.equals("bye"))
+                break;
+
             clearScreen();
             respond();
 
             System.out.print("> ");
-            statement = scanner.nextLine();
-        }
+        } while (true);
     }
 
     private void respond() {

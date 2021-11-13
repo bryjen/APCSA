@@ -22,23 +22,7 @@ public class Main {
             return;
         }
 
-        new Magpie2();
+        new Magpie2()
+                .start();
     }
-
-
-    /*
-    OPEN CMD AND RUN THIS PROJECT
-
-    Runtime rt = Runtime.getRuntime();
-        rt.exec("cmd.exe /c cd \""
-                +"C:\\Users\\Game\\Documents\\GitHub\\APCSA\\Lab\\Magpie\\out\\production\\Magpie"
-                +"\" & start cmd.exe /k \"java Main\"");
-     */
-
-    /*
-    clear console
-
-    System.out.print("\033[H\033[2J");
-        System.out.flush();
-     */
 }
